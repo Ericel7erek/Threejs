@@ -14,6 +14,12 @@ cubeMaterial
 )
 // The Method of adding new stuff to the scene
 scene.add(cubeMesh)
+cubeMesh.position.y = 0.5
+cubeMesh.position.x = -1
+cubeMesh.position.z = -1
+
+const axesHelper = new THREE.AxesHelper(1)
+scene.add(axesHelper)
 
 const camera = new THREE.PerspectiveCamera(
     20, 
@@ -28,8 +34,10 @@ scene.add(camera)
 //DOM container
 const canvas = document.querySelector('.threejs')
 //render what we have
-const renderer = new THREE.WebGLRenderer({canvas})
-
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true
+})
 //How to add controls
 
 const controls = new OrbitControls(camera, canvas)
@@ -41,6 +49,11 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix()
     renderer.setSize(window.innerWidth, window.innerHeight)
 })
+
+renderer.setSize(window.innerWidth, window.innerHeight)
+// This is a way to fix antialiasing issue where edges look like stairs
+// renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
+// console.log(window.devicePixelRatio);
 
 const renderloop =() => {
     console.log("rendered");
