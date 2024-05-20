@@ -12,7 +12,7 @@ const cubeMesh = new THREE.Mesh(cubeGeo,cubeMaterial)
 cubeMesh.position.set(0,0,0)
 // cubeMesh.rotation.y = Math.PI * 2 // Default rotation
 //Easier method for calculating rotation
-cubeMesh.rotation.reorder('YXZ')
+cubeMesh.rotation.reorder('YXZ') //called to order the rotation process
 cubeMesh.rotation.y = THREE.MathUtils.degToRad(90)
 cubeMesh.rotation.x = THREE.MathUtils.degToRad(120)
 const cubeMesh2 = new THREE.Mesh(cubeGeo,cubeMaterial)
