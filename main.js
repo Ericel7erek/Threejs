@@ -2,7 +2,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Pane } from 'tweakpane';
 const pane = new Pane()
-console.log(OrbitControls);
+console.log(pane);
+// console.log(OrbitControls);
 
 const scene = new THREE.Scene()
 //Creating custom geometry 
@@ -19,25 +20,55 @@ const scene = new THREE.Scene()
 // scene.add( mesh );
 
 
-const cubeGeo = new THREE.BoxGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial({color: "red"})
+let cubeGeo = new THREE.PlaneGeometry(1,1,1)
+const cubeMaterial = new THREE.MeshBasicMaterial({color: "red",wireframe: true})
 const cubeMesh = new THREE.Mesh(cubeGeo,cubeMaterial)
 cubeMesh.position.set(0,0,0)
 // cubeMesh.rotation.y = Math.PI * 2 // Default rotation
 //Easier method for calculating rotation
-cubeMesh.rotation.reorder('YXZ') //called to order the rotation process
+// cubeMesh.rotation.reorder('YXZ') //called to order the rotation process
 
-const cubeMesh2 = new THREE.Mesh(cubeGeo,cubeMaterial)
-cubeMesh2.position.set(1.2,0,)
-console.log(cubeMesh2);
-const cubeMesh3 = new THREE.Mesh(cubeGeo,cubeMaterial)
-cubeMesh3.position.set(2.4,0,0)
-const group = new THREE.Group
+// const cubeMesh2 = new THREE.Mesh(cubeGeo,cubeMaterial)
+// cubeMesh2.position.set(1.2,0,)
+// console.log(cubeMesh2);
+// const cubeMesh3 = new THREE.Mesh(cubeGeo,cubeMaterial)
+// cubeMesh3.position.set(2.4,0,0)
+// const group = new THREE.Group
 // group.add(cubeMesh)
 // group.add(cubeMesh2)
 // group.add(cubeMesh3)
+
 // The Method of adding new stuff to the scene
 // scene.add(group)
+scene.add(cubeMesh)
+const planeParameters = {
+    width: 1,
+    height:1,
+}
+const planeFolder = pane.addFolder({
+    title: "Oba",
+    expanded: true,
+})
+planeFolder.addBinding(planeParameters, "width", {
+    min: 0,
+    max: 10,
+    step:0.01,
+    label: "AAAA"
+})
+.on("change", ()=>{
+    cubeGeo = new THREE.PlaneGeometry(planeParameters.width,planeParameters.height)
+    cubeMesh.geometry = cubeGeo
+})
+planeFolder.addBinding(planeParameters, "height", {
+    min: 0,
+    max: 10,
+    step:0.01,
+    label: "AAAA"
+})
+.on("change", ()=>{
+    cubeGeo = new THREE.PlaneGeometry(planeParameters.width,planeParameters.height)
+    cubeMesh.geometry = cubeGeo
+})
 // const tempVector = new THREE.Vector3(0,3,0)
 // cubeMesh.position.y = 0.5
 // cubeMesh.position.x = -1
@@ -92,17 +123,17 @@ const renderloop =() => {
     previousTime = currentTime
 
     // cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 20
-    console.log(Math.sin(currentTime));
+    // console.log(Math.sin(currentTime));
     // cubeMesh.rotation.y = Math.sin(currentTime) +2
 
     // cubeMesh.rotation.x += THREE.MathUtils.degToRad(10)
-    console.log("rendered");
+    // console.log("rendered");
     controls.update()
     renderer.render(scene, camera) // the rendering loop
     window.requestAnimationFrame(renderloop)
 }
 renderloop()
 
-console.log(canvas);
-console.log(scene);
-console.log(cubeMesh);
+// console.log(canvas);
+// console.log(scene);
+// console.log(cubeMesh);
