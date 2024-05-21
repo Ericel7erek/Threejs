@@ -20,41 +20,50 @@ const scene = new THREE.Scene()
 // scene.add( mesh );
 
 
-let cubeGeo = new THREE.TorusKnotGeometry(1,0.4,64,8)
-const cubeMaterial = new THREE.MeshPhysicalMaterial()
-cubeMaterial.color = new THREE.Color("red")
-//cubeMaterial.side = 2 //or THREE.DoubleSide
-cubeMaterial.transparent = true
-cubeMaterial.opacity = 0.9
-cubeMaterial.fog = false
-pane.addBinding(cubeMaterial, 'metalness',{
+let cubeGeo = new THREE.BoxGeometry(1,1,1)
+const material = new THREE.MeshPhysicalMaterial()
+material.color = new THREE.Color("red")
+//material.side = 2 //or THREE.DoubleSide
+material.transparent = true
+material.opacity = 0.9
+material.fog = false
+const cubeMesh = new THREE.Mesh(cubeGeo,material)
+cubeMesh.position.set(0,0,0)
+
+const knotGeo = new THREE.TorusKnotGeometry(0.4,0.1,100,32)
+const knot = new THREE.Mesh(knotGeo, material)
+scene.add(knot)
+knot.position.x = 1.5
+
+
+const planeGeometry = new THREE.PlaneGeometry(1,1)
+const plane = new THREE.Mesh(planeGeometry,material)
+plane.position.set(-1.5,0,0)
+scene.add( plane )
+
+
+pane.addBinding(material, 'metalness',{
 min: 0,
 max: 1,
 scale:0.1
 })
-pane.addBinding(cubeMaterial, 'roughness',{
+pane.addBinding(material, 'roughness',{
 min: -2,
 max: 1,
 scale:0.1
 })
-pane.addBinding(cubeMaterial, 'reflectivity',{
+pane.addBinding(material, 'reflectivity',{
 min: -2,
 max: 1,
 scale:0.1
 })
-pane.addBinding(cubeMaterial, 'clearcoat',{
+pane.addBinding(material, 'clearcoat',{
 min: -2,
 max: 1,
 scale:0.1
 })
 
-const cubeMesh = new THREE.Mesh(cubeGeo,cubeMaterial)
-cubeMesh.position.set(0,0,0)
 
-const planeGeometry = new THREE.PlaneGeometry(1,1)
-const plane = new THREE.Mesh(planeGeometry,cubeMaterial)
-plane.position.set(-1.5,0,0)
-scene.add( plane )
 
 
 const fog = new THREE.Fog("black", 1, 20)
@@ -73,10 +82,10 @@ scene.add( directionalLight)
 //Easier method for calculating rotation
 // cubeMesh.rotation.reorder('YXZ') //called to order the rotation process
 
-// const cubeMesh2 = new THREE.Mesh(cubeGeo,cubeMaterial)
+// const cubeMesh2 = new THREE.Mesh(cubeGeo,material)
 // cubeMesh2.position.set(1.2,0,)
 // console.log(cubeMesh2);
-// const cubeMesh3 = new THREE.Mesh(cubeGeo,cubeMaterial)
+// const cubeMesh3 = new THREE.Mesh(cubeGeo,material)
 // cubeMesh3.position.set(2.4,0,0)
 // const group = new THREE.Group
 // group.add(cubeMesh)
@@ -129,7 +138,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     200
     )
-camera.position.z = 5
+camera.position.z = 8
 // Not needed but you can add it(camera) to the scene
 scene.add(camera)
 
