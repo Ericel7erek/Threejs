@@ -21,25 +21,45 @@ const scene = new THREE.Scene()
 
 
 let cubeGeo = new THREE.BoxGeometry(1,1,1)
+const knotGeo = new THREE.TorusKnotGeometry(0.4,0.1,100,32)
+const planeGeometry = new THREE.PlaneGeometry(1,1)
+const sphereGeo = new THREE.SphereGeometry(0.5,32,32)
+const cylinderGeo = new THREE.CylinderGeometry(0.5,0.5,1,32)
+
+
 const material = new THREE.MeshPhysicalMaterial()
 material.color = new THREE.Color("red")
 //material.side = 2 //or THREE.DoubleSide
 material.transparent = true
 material.opacity = 0.9
 material.fog = false
+
 const cubeMesh = new THREE.Mesh(cubeGeo,material)
 cubeMesh.position.set(0,0,0)
 
-const knotGeo = new THREE.TorusKnotGeometry(0.4,0.1,100,32)
 const knot = new THREE.Mesh(knotGeo, material)
-scene.add(knot)
 knot.position.x = 1.5
 
-
-const planeGeometry = new THREE.PlaneGeometry(1,1)
 const plane = new THREE.Mesh(planeGeometry,material)
 plane.position.set(-1.5,0,0)
-scene.add( plane )
+
+const sphere = new THREE.Mesh()
+sphere.geometry = sphereGeo
+sphere.material = material
+sphere.position.y = -1.5
+
+const cylinder = new THREE.Mesh()
+cylinder.geometry = cylinderGeo
+cylinder.material = material
+cylinder.position.y = 1.5
+
+
+scene.add(cubeMesh)
+scene.add(plane)
+scene.add(knot)
+scene.add(sphere ,cylinder)
+
+
 
 
 pane.addBinding(material, 'metalness',{
@@ -76,7 +96,7 @@ scene.add(helper)
 directionalLight.position.set(0,0,5)
 directionalLight.intensity = 1
 directionalLight.color = new THREE.Color("white")
-scene.add( directionalLight)
+scene.add(directionalLight)
 
 // cubeMesh.rotation.y = Math.PI * 2 // Default rotation
 //Easier method for calculating rotation
@@ -94,7 +114,6 @@ scene.add( directionalLight)
 
 // The Method of adding new stuff to the scene
 // scene.add(group)
-scene.add(cubeMesh)
 const planeParameters = {
     width: 1,
     height:1,
@@ -138,7 +157,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     200
     )
-camera.position.z = 8
+camera.position.z =15
 // Not needed but you can add it(camera) to the scene
 scene.add(camera)
 
@@ -171,16 +190,20 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 
 const clock = new THREE.Clock()
 let previousTime = 0
+
+console.log(scene.children);
 const renderloop =() => {
+    
     //delta equation
     const currentTime = clock.getElapsedTime()
     const delta = currentTime - previousTime
     previousTime = currentTime
-
+    
     // cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 20
     // console.log(Math.sin(currentTime));
     // cubeMesh.rotation.y = Math.sin(currentTime) +2
-
+    
+    scene.children[6].position.x = Math.sin(currentTime) *20
     // cubeMesh.rotation.x += THREE.MathUtils.degToRad(10)
     // console.log("rendered");
     controls.update()
