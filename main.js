@@ -20,10 +20,16 @@ const scene = new THREE.Scene()
 // scene.add( mesh );
 
 
-let cubeGeo = new THREE.PlaneGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial({color: "red",wireframe: true})
+let cubeGeo = new THREE.BoxGeometry(1,1,1)
+const cubeMaterial = new THREE.MeshBasicMaterial()
+cubeMaterial.color = new THREE.Color("red")
+cubeMaterial.wireframe = true
 const cubeMesh = new THREE.Mesh(cubeGeo,cubeMaterial)
 cubeMesh.position.set(0,0,0)
+
+const planeGeometry = new THREE.PlaneGeometry(1,1)
+const plane = new THREE.Mesh(planeGeometry,cubeMaterial)
+scene.add( plane );s
 // cubeMesh.rotation.y = Math.PI * 2 // Default rotation
 //Easier method for calculating rotation
 // cubeMesh.rotation.reorder('YXZ') //called to order the rotation process
