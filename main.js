@@ -53,11 +53,10 @@ cylinder.geometry = cylinderGeo
 cylinder.material = material
 cylinder.position.y = 1.5
 
+const group = new THREE.Group()
+group.add(cubeMesh, plane, knot, sphere, cylinder)
+scene.add(group)
 
-scene.add(cubeMesh)
-scene.add(plane)
-scene.add(knot)
-scene.add(sphere ,cylinder)
 
 
 
@@ -202,8 +201,10 @@ const renderloop =() => {
     // cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 20
     // console.log(Math.sin(currentTime));
     // cubeMesh.rotation.y = Math.sin(currentTime) +2
+    group.rotation.y += 0.001
+        
     
-    scene.children[6].position.x = Math.sin(currentTime) *20
+    scene.children[2].position.x = Math.sin(currentTime) *20
     // cubeMesh.rotation.x += THREE.MathUtils.degToRad(10)
     // console.log("rendered");
     controls.update()
