@@ -20,13 +20,33 @@ const scene = new THREE.Scene()
 // scene.add( mesh );
 
 
-let cubeGeo = new THREE.BoxGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial()
+let cubeGeo = new THREE.TorusKnotGeometry(1,0.4,64,8)
+const cubeMaterial = new THREE.MeshPhysicalMaterial()
 cubeMaterial.color = new THREE.Color("red")
-cubeMaterial.side = 2 //or THREE.DoubleSide
+//cubeMaterial.side = 2 //or THREE.DoubleSide
 cubeMaterial.transparent = true
 cubeMaterial.opacity = 0.9
-cubeMaterial.fog = true
+cubeMaterial.fog = false
+pane.addBinding(cubeMaterial, 'metalness',{
+min: 0,
+max: 1,
+scale:0.1
+})
+pane.addBinding(cubeMaterial, 'roughness',{
+min: -2,
+max: 1,
+scale:0.1
+})
+pane.addBinding(cubeMaterial, 'reflectivity',{
+min: -2,
+max: 1,
+scale:0.1
+})
+pane.addBinding(cubeMaterial, 'clearcoat',{
+min: -2,
+max: 1,
+scale:0.1
+})
 
 const cubeMesh = new THREE.Mesh(cubeGeo,cubeMaterial)
 cubeMesh.position.set(0,0,0)
@@ -34,16 +54,21 @@ cubeMesh.position.set(0,0,0)
 const planeGeometry = new THREE.PlaneGeometry(1,1)
 const plane = new THREE.Mesh(planeGeometry,cubeMaterial)
 plane.position.set(-1.5,0,0)
-scene.add( plane );
+scene.add( plane )
+
 
 const fog = new THREE.Fog("black", 1, 20)
 scene.fog = fog
 scene.background = new THREE.Color("black")
-// const directionalLight = new THREE.SpotLight()
-// directionalLight.position.set(0,0,1)
-// directionalLight.intensity = 100
-// directionalLight.color = new THREE.Color("white")
-// scene.add( directionalLight)
+
+const directionalLight = new THREE.DirectionalLight()
+const helper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(helper)
+directionalLight.position.set(0,0,5)
+directionalLight.intensity = 1
+directionalLight.color = new THREE.Color("white")
+scene.add( directionalLight)
+
 // cubeMesh.rotation.y = Math.PI * 2 // Default rotation
 //Easier method for calculating rotation
 // cubeMesh.rotation.reorder('YXZ') //called to order the rotation process
@@ -107,6 +132,7 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 5
 // Not needed but you can add it(camera) to the scene
 scene.add(camera)
+
 console.log(cubeMesh.position.distanceTo(camera.position));
 //use .set for changing 3 values at the same time
 
