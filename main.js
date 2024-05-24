@@ -19,7 +19,8 @@ const scene = new THREE.Scene()
 // const mesh = new THREE.Mesh( geometry, material );
 // scene.add( mesh );
 
-
+//initialize texture loader
+const textureLoader = new THREE.TextureLoader()
 let cubeGeo = new THREE.BoxGeometry(1,1,1)
 const knotGeo = new THREE.TorusKnotGeometry(0.4,0.1,100,32)
 const planeGeometry = new THREE.PlaneGeometry(1,1)
@@ -27,12 +28,16 @@ const sphereGeo = new THREE.SphereGeometry(0.5,32,32)
 const cylinderGeo = new THREE.CylinderGeometry(0.5,0.5,1,32)
 
 
+const texture = textureLoader.load("assets/brick-wall_albedo.png")
+console.log(texture);
+
 const material = new THREE.MeshPhysicalMaterial()
-material.color = new THREE.Color("red")
+// material.color = new THREE.Color("white")
 //material.side = 2 //or THREE.DoubleSide
-material.transparent = true
-material.opacity = 0.9
+material.transparent = false
+material.opacity = 1
 material.fog = false
+material.map = texture
 
 const cubeMesh = new THREE.Mesh(cubeGeo,material)
 cubeMesh.position.set(0,0,0)
@@ -41,7 +46,9 @@ const knot = new THREE.Mesh(knotGeo, material)
 knot.position.x = 1.5
 
 const plane = new THREE.Mesh(planeGeometry,material)
-plane.position.set(-1.5,0,0)
+plane.position.set(0,-2,0)
+plane.rotation.x = Math.PI* 1.5
+plane.scale.set(100,100)
 
 const sphere = new THREE.Mesh()
 sphere.geometry = sphereGeo
@@ -92,7 +99,7 @@ scene.background = new THREE.Color("black")
 const directionalLight = new THREE.DirectionalLight()
 const helper = new THREE.DirectionalLightHelper(directionalLight)
 scene.add(helper)
-directionalLight.position.set(0,0,5)
+directionalLight.position.set(0,5,5)
 directionalLight.intensity = 1
 directionalLight.color = new THREE.Color("white")
 scene.add(directionalLight)
@@ -154,7 +161,7 @@ const camera = new THREE.PerspectiveCamera(
     20, 
     window.innerWidth / window.innerHeight,
     0.1,
-    200
+    2000
     )
 camera.position.z =15
 // Not needed but you can add it(camera) to the scene
@@ -201,7 +208,7 @@ const renderloop =() => {
     // cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 20
     // console.log(Math.sin(currentTime));
     // cubeMesh.rotation.y = Math.sin(currentTime) +2
-    group.rotation.y += 0.001
+    // group.rotation.y += 0.001
         
     
     scene.children[2].position.x = Math.sin(currentTime) *20
