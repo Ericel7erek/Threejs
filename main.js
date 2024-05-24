@@ -149,6 +149,16 @@ directionalLight.position.set(0,5,5)
 directionalLight.intensity = 1
 directionalLight.color = new THREE.Color("white")
 scene.add(directionalLight)
+// const ambientLight = new THREE.AmbientLight()
+// scene.add(ambientLight)
+// pane.addBinding(ambientLight, "color", {
+//     color: {type: "float"}
+// })
+// pane.addBinding(ambientLight, "intensity", {
+//     min: 0,
+//     max: 1,
+//     scale: 0.1
+// })
 
 // cubeMesh.rotation.y = Math.PI * 2 // Default rotation
 //Easier method for calculating rotation
