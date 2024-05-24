@@ -28,8 +28,15 @@ const sphereGeo = new THREE.SphereGeometry(0.5,32,32)
 const cylinderGeo = new THREE.CylinderGeometry(0.5,0.5,1,32)
 
 
-const texture = textureLoader.load("assets/brick-wall_albedo.png")
-console.log(texture);
+const Bricks = textureLoader.load("assets/brick-wall_albedo.png")
+console.log(Bricks);
+Bricks.repeat.set(10,10)
+// Bricks.wrapS = THREE.MirroredRepeatWrapping
+// Bricks.wrapT = THREE.MirroredRepeatWrapping
+
+Bricks.wrapS = THREE.RepeatWrapping
+Bricks.wrapT = THREE.RepeatWrapping
+
 
 const material = new THREE.MeshPhysicalMaterial()
 // material.color = new THREE.Color("white")
@@ -37,7 +44,20 @@ const material = new THREE.MeshPhysicalMaterial()
 material.transparent = false
 material.opacity = 1
 material.fog = false
-material.map = texture
+material.map = Bricks
+
+pane.addBinding(Bricks, 'offset',{
+    X: {
+        min: 0,
+        max: 1,
+        scale:0.1
+    },
+    Y:{
+        min: 0,
+        max: 1,
+        scale:0.1
+    }
+})
 
 const cubeMesh = new THREE.Mesh(cubeGeo,material)
 cubeMesh.position.set(0,0,0)
