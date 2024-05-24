@@ -28,14 +28,19 @@ const sphereGeo = new THREE.SphereGeometry(0.5,32,32)
 const cylinderGeo = new THREE.CylinderGeometry(0.5,0.5,1,32)
 
 
-const Bricks = textureLoader.load("assets/brick-wall_albedo.png")
-console.log(Bricks);
-Bricks.repeat.set(10,10)
+const bricksAlbedo = textureLoader.load("/assets/brick-wall-bl/brick-wall_albedo.png")
+const bricksAO = textureLoader.load("/assets/brick-wall-bl/brick-wall_ao.png")
+const bricksHeight = textureLoader.load("/assets/brick-wall-bl/brick-wall_height.png")
+const bricksMetallic = textureLoader.load("/assets/brick-wall-bl/brick-wall_metallic.png")
+const bricksOgl = textureLoader.load("/assets/brick-wall-bl/brick-wall_normal-ogl.png")
+const bricksRoughness = textureLoader.load("/assets/brick-wall-bl/brick-wall_roughness.png")
+
+bricksAlbedo.repeat.set(10,10)
 // Bricks.wrapS = THREE.MirroredRepeatWrapping
 // Bricks.wrapT = THREE.MirroredRepeatWrapping
 
-Bricks.wrapS = THREE.RepeatWrapping
-Bricks.wrapT = THREE.RepeatWrapping
+bricksAlbedo.wrapS = THREE.RepeatWrapping
+bricksAlbedo.wrapT = THREE.RepeatWrapping
 
 
 const material = new THREE.MeshPhysicalMaterial()
@@ -44,9 +49,13 @@ const material = new THREE.MeshPhysicalMaterial()
 material.transparent = false
 material.opacity = 1
 material.fog = false
-material.map = Bricks
+material.map = bricksAlbedo
+material.roughnessMap = bricksRoughness
+material.normalMap = bricksOgl
+material.aoMap = bricksAO
 
-pane.addBinding(Bricks, 'offset',{
+
+pane.addBinding(bricksAlbedo, 'offset',{
     X: {
         min: 0,
         max: 1,
