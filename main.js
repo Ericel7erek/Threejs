@@ -22,10 +22,20 @@ const scene = new THREE.Scene()
 //initialize texture loader
 const textureLoader = new THREE.TextureLoader()
 let cubeGeo = new THREE.BoxGeometry(1,1,1)
+const uv2CubeGeo = new THREE.BufferAttribute(cubeGeo.attributes.uv.array, 2)
+cubeGeo.setAttribute( "uv2", uv2CubeGeo)
 const knotGeo = new THREE.TorusKnotGeometry(0.4,0.1,100,32)
+const uv2KnotGeo = new THREE.BufferAttribute(knotGeo.attributes.uv.array, 2)
+knotGeo.setAttribute( "uv2", uv2KnotGeo)
 const planeGeometry = new THREE.PlaneGeometry(1,1)
+const uv2PlaneGeometry = new THREE.BufferAttribute(planeGeometry.attributes.uv.array, 2)
+planeGeometry.setAttribute( "uv2", uv2PlaneGeometry)
 const sphereGeo = new THREE.SphereGeometry(0.5,32,32)
+const uv2SphereGeo = new THREE.BufferAttribute(sphereGeo.attributes.uv.array, 2)
+cubeGeo.setAttribute( "uv2", uv2SphereGeo)
 const cylinderGeo = new THREE.CylinderGeometry(0.5,0.5,1,32)
+const uv2CylinderGeo = new THREE.BufferAttribute(cylinderGeo.attributes.uv.array, 2)
+cubeGeo.setAttribute( "uv2", uv2CylinderGeo)
 
 
 const bricksAlbedo = textureLoader.load("/assets/brick-wall-bl/brick-wall_albedo.png")
@@ -52,8 +62,15 @@ material.fog = false
 material.map = bricksAlbedo
 material.roughnessMap = bricksRoughness
 material.normalMap = bricksOgl
-material.aoMap = bricksAO
+material.aoMapin = bricksAO
+material.displacementMap = bricksHeight
+material.displacementScale = 0.1
 
+pane.addBinding(material, "aoMapIntensity",{
+        min: 0,
+        max: 1,
+        scale:0.1
+})
 
 pane.addBinding(bricksAlbedo, 'offset',{
     X: {
