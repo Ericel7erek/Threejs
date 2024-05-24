@@ -142,10 +142,34 @@ const fog = new THREE.Fog("black", 1, 20)
 scene.fog = fog
 scene.background = new THREE.Color("black")
 
+//Lights
+// Ambient Light: Lights the whole scene
+// Hemispheric Light: Lights top half in a color and bottom half in a color
+//Directional Light: Light like the sun or pointed at a direction
+//Spotlight: is more like a lamp that is affected by the range between it and the object can specify distance, angle, penumbra and decay
+//pointLight: Like a candle light with an additional value called distance and decay
+//Rect Area Light: Like a photoshoot rectangle light and has a lookAt instead of target.position 
 const directionalLight = new THREE.DirectionalLight()
-const helper = new THREE.DirectionalLightHelper(directionalLight)
+const helper = new THREE.DirectionalLightHelper(directionalLight,0.5)
 scene.add(helper)
-directionalLight.position.set(0,5,5)
+pane.addBinding(directionalLight, "position", {
+    X:{
+        min: 0,
+        max: 100,
+        scale: 1
+    },
+    Y:{
+        min: 0,
+        max: 100,
+        scale: 1
+    },
+    Z:{
+        min: 0,
+        max: 100,
+        scale: 1
+    }
+})
+// console.log(directionalLight.target)
 directionalLight.intensity = 1
 directionalLight.color = new THREE.Color("white")
 scene.add(directionalLight)
@@ -267,7 +291,7 @@ const renderloop =() => {
     // group.rotation.y += 0.001
         
     
-    scene.children[2].position.x = Math.sin(currentTime) *20
+    // scene.children[2].position.x = Math.sin(currentTime) *20
     // cubeMesh.rotation.x += THREE.MathUtils.degToRad(10)
     // console.log("rendered");
     controls.update()
