@@ -87,14 +87,15 @@ pane.addBinding(bricksAlbedo, 'offset',{
 
 const cubeMesh = new THREE.Mesh(cubeGeo,material)
 cubeMesh.position.set(0,0,0)
-
+cubeMesh.castShadow = true
 const knot = new THREE.Mesh(knotGeo, material)
 knot.position.x = 1.5
-
+knot.castShadow = true
 const plane = new THREE.Mesh(planeGeometry,material)
 plane.position.set(0,-2,0)
 plane.rotation.x = Math.PI* 1.5
 plane.scale.set(100,100)
+plane.receiveShadow = true
 
 const sphere = new THREE.Mesh()
 sphere.geometry = sphereGeo
@@ -150,6 +151,7 @@ scene.background = new THREE.Color("black")
 //pointLight: Like a candle light with an additional value called distance and decay
 //Rect Area Light: Like a photoshoot rectangle light and has a lookAt instead of target.position 
 const directionalLight = new THREE.DirectionalLight()
+directionalLight.castShadow = true
 const helper = new THREE.DirectionalLightHelper(directionalLight,0.5)
 scene.add(helper)
 pane.addBinding(directionalLight, "position", {
@@ -270,6 +272,8 @@ window.addEventListener('resize', () => {
 })
 
 renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
 // This is a way to fix antialiasing issue where edges look like stairs
 // renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
 // console.log(window.devicePixelRatio);
