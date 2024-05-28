@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { Pane } from 'tweakpane';
 const pane = new Pane()
 console.log(pane);
@@ -202,6 +203,15 @@ scene.add(directionalLight)
 
 // The Method of adding new stuff to the scene
 // scene.add(group)
+const gltfLoader = new GLTFLoader()
+
+gltfLoader.load('/assets/models/boomBoxGLTF/BoomBox.gltf', (gltf)=>{
+    console.log(gltf);
+    const modelScene = gltf.scene
+    modelScene.scale.setScalar(50)
+    scene.add(modelScene)
+})
+
 const planeParameters = {
     width: 1,
     height:1,
