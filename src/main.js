@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { Pane } from 'tweakpane';
 const pane = new Pane()
 console.log(pane);
@@ -110,7 +111,7 @@ cylinder.position.y = 1.5
 
 const group = new THREE.Group()
 group.add(cubeMesh, plane, knot, sphere, cylinder)
-scene.add(group)
+// scene.add(group)
 
 
 
@@ -141,7 +142,7 @@ scale:0.1
 
 
 const fog = new THREE.Fog("black", 1, 20)
-scene.fog = fog
+// scene.fog = fog
 scene.background = new THREE.Color("black")
 
 //Lights
@@ -157,7 +158,7 @@ const helper = new THREE.DirectionalLightHelper(directionalLight,0.5)
 scene.add(helper)
 pane.addBinding(directionalLight, "position", {
     X:{
-        min: 0,
+        min: 8,
         max: 100,
         scale: 1
     },
@@ -203,14 +204,52 @@ scene.add(directionalLight)
 
 // The Method of adding new stuff to the scene
 // scene.add(group)
-const gltfLoader = new GLTFLoader()
+const envMap = new THREE.CubeTextureLoader()
+    .setPath( '/textures/' )
+    .load( [
+                'px.png',
+                'nx.png',
+                'py.png',
+                'ny.png',
+                'pz.png',
+                'nz.png'
+            ] );
 
-gltfLoader.load('/assets/models/boomBoxGLTF/BoomBox.gltf', (gltf)=>{
-    console.log(gltf);
-    const modelScene = gltf.scene
+
+
+        const gltfLoader = new GLTFLoader();
+        const dracoLoader = new DRACOLoader()
+        dracoLoader.setDecoderPath( '/draco/' )
+        gltfLoader.setDRACOLoader(dracoLoader)
+
+
+
+scene.background = envMap
+
+
+
+
+    const model = await gltfLoader.loadAsync('/assets/models/boomBoxDraco/BoomBox.gltf')
+    const modelScene = model.scene
+    // console.log(modelScene);
     modelScene.scale.setScalar(50)
+    // modelScene.traverse((child)=>{
+    //     if (child.isMesh) {
+    //         child.material.roughness = 0
+    //         child.material.metalness = 1
+    //         // child.material.envMapIntensity = 10
+    //     }
+    //     if(child.name === 'Wheels'){
+    //         child.material.color = new THREE.Color(255,0,0)
+        
+    //     }
+    // })
+    // material2.envMap = envMap
+    // material2.envMapIntensity = 5
     scene.add(modelScene)
-})
+    scene.environment = envMap
+    
+
 
 const planeParameters = {
     width: 1,
